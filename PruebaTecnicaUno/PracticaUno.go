@@ -1,4 +1,4 @@
-package main
+package PracticaUno
 
 /*import (
 	"fmt"
@@ -46,7 +46,7 @@ func sanitizeName(name string) string {
 	}, name)
 }*/
 
-import "fmt"
+/*import "fmt"
 
 func main() {
 
@@ -72,4 +72,4 @@ func main() {
 		}
 
 	}
-}
+}*/
