@@ -56,7 +56,7 @@ func main() {
 
 //Estructura para un contacto
 
-type Contacto struct {
+/*type Contacto struct {
 	Nombre    string
 	Telefono  string
 	Correo    string
@@ -151,4 +151,101 @@ func main() {
 
 	// Mostrar la agenda después de eliminar un contacto
 	mostrarAgenda(agenda)
+}*/
+
+//ejercicio 3
+
+type Libro struct {
+	Titulo     string
+	Autor      string
+	Genero     string
+	Disponible bool
+}
+
+func agregarLibro(coleccion map[string]Libro, titulo, autor, genero string) {
+	nuevoLibro := Libro{
+		Titulo:     titulo,
+		Autor:      autor,
+		Genero:     genero,
+		Disponible: true,
+	}
+	coleccion[titulo] = nuevoLibro
+	fmt.Printf("Libro '%s' agregado a la coleccion \n", titulo)
+
+}
+
+func buscarPorTitulo(coleccion map[string]Libro, titulo string) (Libro, bool) {
+	libro, encontrado := coleccion[titulo]
+	if !encontrado {
+		fmt.Printf("Libro '%s' no encontrado. \n", titulo)
+	}
+	return libro, encontrado
+}
+
+func buscarPorAutor(coleccion map[string]Libro, autor string) []Libro {
+	var librosPorAutor []Libro
+	for _, libro := range coleccion {
+		if libro.Autor == autor {
+			librosPorAutor = append(librosPorAutor, libro)
+		}
+	}
+	return librosPorAutor
+}
+
+func actualizarEstado(coleccion map[string]Libro, titulo string, disponible bool) {
+	if libro, encontrado := coleccion[titulo]; encontrado {
+		libro.Disponible = disponible
+		coleccion[titulo] = libro
+		estado := "disponible"
+		if !disponible {
+			estado = "prestado"
+		}
+		fmt.Printf("Estado del libro '%s' actualizado a %s. \n", titulo, estado)
+	} else {
+		fmt.Printf("Libro '%s' no encontrado. \n", titulo)
+	}
+}
+
+func eliminarLibro(coleccion map[string]Libro, titulo string) {
+	if _, encontrado := coleccion[titulo]; encontrado {
+		delete(coleccion, titulo)
+		fmt.Printf("Libro '%s' eliminado de la coleccion.\n ", titulo)
+	} else {
+		fmt.Printf("Libro '%s' no encontrado. \n", titulo)
+	}
+}
+
+func mostrarColeccion(coleccion map[string]Libro) {
+	fmt.Println("Coleccion de libros: ")
+	for _, libro := range coleccion {
+		estado := "disponible"
+		if !libro.Disponible {
+			estado = "prestado"
+		}
+		fmt.Printf("- Titulo: %s, Autor: %s, Genero: %s, Estado: %s\n", libro.Titulo, libro.Autor, libro.Genero, estado)
+	}
+}
+
+func main() {
+	coleccion := make(map[string]Libro)
+
+	// Agregar algunos libros a la colección
+	agregarLibro(coleccion, "El principito", "Antoine de Saint-Exupéry", "Fábula")
+	agregarLibro(coleccion, "Cien años de soledad", "Gabriel García Márquez", "Realismo mágico")
+	agregarLibro(coleccion, "1984", "George Orwell", "Distopía")
+
+	// Mostrar la colección completa
+	mostrarColeccion(coleccion)
+
+	// Actualizar el estado de un libro
+	actualizarEstado(coleccion, "El principito", false)
+
+	// Mostrar la colección después de actualizar el estado de un libro
+	mostrarColeccion(coleccion)
+
+	// Eliminar un libro de la colección
+	eliminarLibro(coleccion, "1984")
+
+	// Mostrar la colección después de eliminar un libro
+	mostrarColeccion(coleccion)
 }
