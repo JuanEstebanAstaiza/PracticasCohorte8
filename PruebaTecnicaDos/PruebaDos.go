@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package PruebaTecnicaDos
 
 //ejercicio 2
 
@@ -155,7 +153,7 @@ func main() {
 
 //ejercicio 3
 
-type Libro struct {
+/*type Libro struct {
 	Titulo     string
 	Autor      string
 	Genero     string
@@ -249,3 +247,4 @@ func main() {
 	// Mostrar la colección después de eliminar un libro
 	mostrarColeccion(coleccion)
 }
+*/
