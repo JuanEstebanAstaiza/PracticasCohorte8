@@ -1,13 +1,13 @@
 package main
 
-//ejercicio 2
-
 import (
 	"errors"
 	"fmt"
 )
 
-type TaskStatus string
+//ejercicio 2
+
+/*type TaskStatus string
 
 const (
 	Pending    TaskStatus = "pendiente"
@@ -82,4 +82,93 @@ func main() {
 	for _, task := range pendingTasks {
 		fmt.Printf("Nombre: %s, Descripcion: %s, Responsable: %s, Estado: %s\n", task.Name, task.Description, task.Assignee, task.Status)
 	}
+}*/
+
+//Ejercicio 3
+
+type BookStatus string
+
+const (
+	Available BookStatus = "disponible"
+	Borrowed  BookStatus = "prestado"
+)
+
+type Book struct {
+	Title  string
+	Author string
+	Genre  string
+	Status BookStatus
+}
+
+type Library struct {
+	books []Book
+}
+
+func (l *Library) FindBooks(query string) []Book {
+	var foundBooks []Book
+	for _, book := range l.books {
+		if book.Title == query || book.Author == query {
+			foundBooks = append(foundBooks, book)
+		}
+	}
+	return foundBooks
+}
+
+func (l *Library) AddBook(title, author, genre string) {
+	book := Book{
+		Title:  title,
+		Author: author,
+		Genre:  genre,
+		Status: Available,
+	}
+	l.books = append(l.books, book)
+}
+
+func (l *Library) UpdateBookStatus(title string, status BookStatus) error {
+	for i, book := range l.books {
+		if book.Title == title {
+			l.books[i].Status = status
+			return nil
+		}
+	}
+	return errors.New("Libro no encontrado")
+}
+
+func (l *Library) RemoveBook(title string) error {
+	for i, book := range l.books {
+		if book.Title == title {
+			l.books = append(l.books[:i], l.books[i+1:]...)
+			return nil
+		}
+	}
+	return errors.New("libro no encontrado")
+}
+
+func main() {
+	library := &Library{}
+
+	library.AddBook("El Quijote", "Miguel de Cervantes", "Novela")
+	library.AddBook("Cien años de soledad", "Gabriel García Márquez", "Novela")
+
+	err := library.UpdateBookStatus("El Quijote", Borrowed)
+	if err != nil {
+		fmt.Println("Error actualizando el estado del libro: ", err)
+	}
+
+	foundBooks := library.FindBooks("Gabriel García Márquez")
+	fmt.Println("Libros encontrados: ")
+	for _, book := range foundBooks {
+		fmt.Printf("Título: %s, Autor: %s, Género: %s, Estado: %s\n", book.Title, book.Author, book.Genre, book.Status)
+	}
+
+	err = library.RemoveBook("Cien años de soledad")
+	if err != nil {
+		fmt.Println("Error eliminando el libro: ", err)
+	}
+
+	fmt.Println("Inventario completo: ")
+	for _, book := range library.books {
+		fmt.Printf("Título: %s, Autor: %s, Género: %s, Estado: %s\n", book.Title, book.Author, book.Genre, book.Status)
+	}
+
 }

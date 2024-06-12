@@ -4,7 +4,7 @@ import "testing"
 
 //------------------------------------------------------------------------------------
 
-func TestAddTask(t *testing.T) {
+/*func TestAddTask(t *testing.T) {
 	tm := &TaskManager{}
 	tm.AddTask("Tarea 1", "Descripcion de la tarea 1")
 
@@ -88,5 +88,87 @@ func TestTaskManagerIntegration(t *testing.T) {
 
 	if pendingTasks[0].Assignee != "Juan" {
 		t.Errorf("Responsable incorrecto, se esperaba 'Juan', se obtuvo '%s'", pendingTasks[0].Assignee)
+	}
+}*/
+
+// Tests ejercicio 3
+
+func TestAddBook(t *testing.T) {
+
+	library := &Library{}
+	library.AddBook("El Quijote", "Miguel de Cervantes", "Novela")
+	library.AddBook("Cien años de soledad", "Gabriel García Márquez", "Novela")
+
+	foundBooks := library.FindBooks("Miguel de Cervantes")
+	if len(foundBooks) != 1 {
+		t.Errorf("Se esperaba 1 libro, se obtuvo %d", len(foundBooks))
+	}
+
+	if foundBooks[0].Title != "El Quijote" {
+		t.Errorf("Título de libro encontrado incorrecto, se esperaba 'El Quijote', se obtuvo '%s'", foundBooks[0].Title)
+	}
+}
+
+func TestUpdateBooksStatus(t *testing.T) {
+	library := &Library{}
+	library.AddBook("El Quijote", "Miguel de Cervantes", "Novela")
+	err := library.UpdateBookStatus("El Quijote", Borrowed)
+
+	if err != nil {
+		t.Errorf("Error actualizando estado del libro: %v", err)
+	}
+
+	if library.books[0].Status != Borrowed {
+		t.Errorf("Estado del libro incorrecto, se esperaba '%s', se obtuvo '%s'", Borrowed, library.books[0].Status)
+	}
+}
+
+func TestRemoveBook(t *testing.T) {
+	library := &Library{}
+
+	library.AddBook("El Quijote", "Miguel de Cervantes", "Novela")
+	err := library.RemoveBook("El Quijote")
+
+	if err != nil {
+		t.Errorf("Error eliminando libro: %v", err)
+	}
+
+	if len(library.books) != 0 {
+		t.Errorf("Se esperaba 0 libros, se obtuvo %d", len(library.books))
+	}
+
+}
+
+func TestLibraryIntegration(t *testing.T) {
+	library := &Library{}
+
+	library.AddBook("El Quijote", "Miguel de Cervantes", "Novela")
+	library.AddBook("Cien años de soledad", "Gabriel García Márquez", "Novela")
+
+	err := library.UpdateBookStatus("El Quijote", Borrowed)
+	if err != nil {
+		t.Errorf("Error actualizando estado del libro: %v", err)
+	}
+
+	foundBooks := library.FindBooks("Gabriel García Márquez")
+	if len(foundBooks) != 1 {
+		t.Errorf("Se esperaba 1 libro encontrado, se obtuvo %d", len(foundBooks))
+	}
+
+	if foundBooks[0].Title != "Cien años de soledad" {
+		t.Errorf("Título del libro encontrado incorrecto, se esperaba 'Cien años de soledad', se obtuvo '%s'", foundBooks[0].Title)
+	}
+
+	err = library.RemoveBook("Cien años de soledad")
+	if err != nil {
+		t.Errorf("Error eliminando libro: %v", err)
+	}
+
+	if len(library.books) != 1 {
+		t.Errorf("Se esperaba 1 libro en la colección, se obtuvo %d", len(library.books))
+	}
+
+	if library.books[0].Title != "El Quijote" {
+		t.Errorf("Título del libro restante incorrecto, se esperaba 'El Quijote', se obtuvo '%s'", library.books[0].Title)
 	}
 }
