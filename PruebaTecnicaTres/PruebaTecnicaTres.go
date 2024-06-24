@@ -1,9 +1,4 @@
-package main
-
-import (
-	"errors"
-	"fmt"
-)
+package PruebaTecnicaTres
 
 //ejercicio 2
 
@@ -86,7 +81,7 @@ func main() {
 
 //Ejercicio 3
 
-type BookStatus string
+/*type BookStatus string
 
 const (
 	Available BookStatus = "disponible"
@@ -171,4 +166,4 @@ func main() {
 		fmt.Printf("Título: %s, Autor: %s, Género: %s, Estado: %s\n", book.Title, book.Author, book.Genre, book.Status)
 	}
 
-}
+}*/
